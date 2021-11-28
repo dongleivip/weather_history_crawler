@@ -26,6 +26,12 @@ class TestCrawler(unittest.TestCase):
             with self.subTest(i=t):
                 self.assertEqual(crawler.fahrenheit_to_celsius(t), expected)
 
+    def test_temperature_convert_failure(self):
+        data = [('', -100), ({}, -100), (None, -100)]
+        for t, expected in data:
+            with self.subTest():
+                self.assertEqual(crawler.fahrenheit_to_celsius(t), expected) 
+
     def test_url_compose(self):
         excepted = 'https://api.weather.com/v1/location/ZLXY:9:CN/observations/historical.json?apiKey=get_your_api_key&units=e&startDate=20211101&endDate=20211130'
         self.assertEqual(crawler.compose_url(

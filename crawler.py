@@ -99,9 +99,12 @@ def convert_to_datetime(timestamp: int):
     return time.strftime("%Y-%m-%d %H:%M:%S", timestr)
 
 
-def fahrenheit_to_celsius(fahrenheit: float):
-    celsius = (fahrenheit - 32) / 1.8
-    return round(celsius, 2)
+def fahrenheit_to_celsius(fahrenheit: int):
+    if isinstance(fahrenheit, (int, float)) and not isinstance(fahrenheit, bool):
+        celsius = (fahrenheit - 32) / 1.8
+        return round(celsius, 2)
+    else:
+        return -100
 
 
 def get_years_range(start: int, years_to_include: int = 0) -> list:
@@ -116,13 +119,13 @@ def get_years_range(start: int, years_to_include: int = 0) -> list:
 def run():
     years_to_download = get_years_range(Start_Year, Years_To_Include)
     file_name = get_file_name(years_to_download)
-    raise "bye bye"
     print("years to download:", years_to_download)
     print("save file to:", file_name)
     with open(file_name, 'a+', newline='') as csv_file:
         writer = csv.writer(csv_file)
         dateRange = get_date_range(years_to_download)
         for datePair in dateRange:
+            print("processing {} ...".format(datePair))
             url = compose_url(datePair)
             data = download_weather_data(url)
             is_header_row = True
